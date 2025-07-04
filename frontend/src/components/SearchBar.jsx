@@ -1,13 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getGeoSuggestions } from "../api/weather";
 
 function SearchBar({ onSearch }) {
   const [city, setCity] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const justSelected = useRef(false);
 
   // Fetch suggestions from backend
   useEffect(() => {
+    if (justSelected.current) {
+      justSelected.current = false;
+      return;
+    }
+
     const fetchSuggestions = async () => {
       try {
         const res = await getGeoSuggestions(city);
@@ -29,6 +35,7 @@ function SearchBar({ onSearch }) {
   }, [city]);
 
   const handleSelect = (location) => {
+    justSelected.current = true;
     const displayName = `${location.name}, ${location.country}`;
     onSearch(location); // now passes full object
     setCity(displayName);
@@ -40,6 +47,7 @@ function SearchBar({ onSearch }) {
     e.preventDefault();
     if (!city.trim() || suggestions.length === 0) return;
     handleSelect(suggestions[0]);
+    setCity("");
   };
 
   return (
