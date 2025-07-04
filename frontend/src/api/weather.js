@@ -34,3 +34,10 @@ export const getGeoSuggestions = async (query) => {
     return [];
   }
 };
+
+export const getAIWeatherSummary = async (weatherData) => {
+  const response = await axios.post(`${BASE_URL}/ai/generate-summary`, {
+    weatherData,
+  });
+  return response.data;
+};

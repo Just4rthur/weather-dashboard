@@ -2,6 +2,7 @@
 import express from "express";
 import cors from "cors";
 import weatherRoutes from "./routes/weather.js";
+import aiRoutes from "./routes/ai-generative-model.js";
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(express.json());
 
 // Mount your routes under /api
 app.use("/api", weatherRoutes);
+app.use("/api/ai", aiRoutes);
 
 // Optional: Base route for testing
 app.get("/", (req, res) => {
