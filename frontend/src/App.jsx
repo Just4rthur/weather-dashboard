@@ -1,20 +1,19 @@
 import { useState } from "react";
-import { getWeatherByCity } from "./api/weather";
+import { getForecastByCoords, getWeatherByCoords } from "./api/weather";
 import SearchBar from "./components/SearchBar";
 import WeatherInfo from "./components/WeatherInfo";
 import MapView from "./components/MapView";
 import Forecast from "./components/Forecast";
-import { getForecastByCity } from "./api/weather";
 
 function App() {
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState(null);
 
-  const handleSearch = async (city) => {
-    const data = await getWeatherByCity(city);
-    const forecastData = await getForecastByCity(city);
-
-    setWeather(data);
+  const handleSearch = async (location) => {
+    const { lat, lon } = location;
+    const weatherData = await getWeatherByCoords(lat, lon);
+    const forecastData = await getForecastByCoords(lat, lon);
+    setWeather(weatherData);
     setForecast(forecastData);
   };
 
